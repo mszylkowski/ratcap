@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "706681720588",
+    "firebase_url": "https://ratcap-34f93.firebaseio.com",
+    "project_id": "ratcap-34f93",
+    "storage_bucket": "ratcap-34f93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:706681720588:android:2f2572112a2a6438",
+        "android_client_info": {
+          "package_name": "com.vikoding.ratcap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "706681720588-0t8csq2g4fau2mhiso08j62rdfv7nv4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vikoding.ratcap",
+            "certificate_hash": "12a9623dcbdf139d6bc8488f0563c821cbf64c77"
+          }
+        },
+        {
+          "client_id": "706681720588-sikiob08cdgv6htspcen5k4f2cck3sq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5B0NSMzVAtrfDOq_ZjVS8KbjggInFdEg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "706681720588-sikiob08cdgv6htspcen5k4f2cck3sq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

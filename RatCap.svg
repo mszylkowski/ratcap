@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="RatCap.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="-304.04988"
+     inkscape:cy="682.89128"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:object-nodes="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="745"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:187.5px;line-height:125%;font-family:'Nexa Bold';-inkscape-font-specification:'Nexa Bold, Bold';letter-spacing:0px;word-spacing:0px;fill:#3f51b5;fill-opacity:1;stroke:#3f51b5;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="-710.52454"
+       y="467.84143"
+       id="text4136"
+       sodipodi:linespacing="125%"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180"><tspan
+         sodipodi:role="line"
+         id="tspan4138"
+         x="-710.52454"
+         y="467.84143"><tspan
+           style="fill:#3f51b5;fill-opacity:1;stroke:#3f51b5;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="tspan4150"
+           dx="0 -7.98 -0.47">Rat</tspan><tspan
+           style="fill:#3f51b5;fill-opacity:1;stroke:#3f51b5;stroke-width:5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="tspan4148" /></tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4140"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:37.5px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
+         id="flowRegion4142"><rect
+           id="rect4144"
+           width="307.08636"
+           height="58.588848"
+           x="24.243662"
+           y="423.03717" /></flowRegion><flowPara
+         id="flowPara4146"></flowPara></flowRoot>    <text
+       sodipodi:linespacing="125%"
+       id="text4152"
+       y="467.84143"
+       x="-408.48892"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:187.5px;line-height:125%;font-family:'Nexa Bold';-inkscape-font-specification:'Nexa Bold, Bold';letter-spacing:0px;word-spacing:0px;fill:#939393;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;"
+       xml:space="preserve"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180"><tspan
+         y="467.84143"
+         x="-408.48892"
+         id="tspan4154"
+         sodipodi:role="line"
+         style="letter-spacing:-6.63000011px;fill:#939393;fill-opacity:1;"
+         dx="0 4.3399987 -4.9199996">Cap</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -388.90873,487.68693 -264.65997,5.05076 2.02031,17.1726 z"
+       id="path4162"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path4164"
+       d="m -389.12134,487.78597 202.68377,17.65843 0.90012,-19.61419 z"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
+    <path
+       style="fill:#000000;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m -389.12134,487.78597 162.69277,25.29052 -3.57143,15 z"
+       id="path4166"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -389.12134,487.78597 -233.02152,35.29052 0,-7.85714 z"
+       id="path4168"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
+    <path
+       style="fill:#ff5722;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -533.36054,353.33664 c 0,0 -93.99397,-64.25972 -16.16245,-77.78175 244.40925,-42.46235 389.9189,88.89343 389.9189,88.89343 0,0 -180.63963,-65.62186 -320.21836,-43.43657 -61.27757,9.73974 -53.53809,32.32489 -53.53809,32.32489 z"
+       id="path4160"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cscsc"
+       inkscape:export-xdpi="180"
+       inkscape:export-ydpi="180" />
+  </g>
+</svg>

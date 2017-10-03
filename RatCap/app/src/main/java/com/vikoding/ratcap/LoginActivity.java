@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.transition.Visibility;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,8 +29,18 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +52,17 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world", "user:pass"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     // UI references.
-    private EditText mUsernameView;
+    private EditText mNameView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordView2;
+    private View mStatusContainer;
+    private Switch mStatusSwitch;
+    private TextView mStatusText;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -66,28 +72,45 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mUsernameView = (EditText) findViewById(R.id.username);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-                return false;
+            }
+        };
+
+        mNameView = (EditText) findViewById(R.id.name);
+        mEmailView = (EditText) findViewById(R.id.email);
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView2 = (EditText) findViewById(R.id.password2);
+        mStatusSwitch = (Switch) findViewById(R.id.status_switch);
+        mStatusText = (TextView) findViewById(R.id.status_text);
+        mStatusContainer = findViewById(R.id.status_container);
+
+        mStatusSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                if (buttonView.isChecked()) {
+                    mStatusText.setText("Status: Admin");
+                } else {
+                    mStatusText.setText("Status: User");
+                }
             }
         });
-
-        mPasswordView2 = (EditText) findViewById(R.id.password2);
 
         final Button mSignInButton = (Button) findViewById(R.id.login_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                submit();
             }
         });
 
@@ -96,88 +119,184 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 isRegistering = !isRegistering;
-                if (!isRegistering) {
-                    // Inside Login
-                    registerText.setText("Don't have an account? Register");
-                    mSignInButton.setText("Log in");
-                    mPasswordView2.setVisibility(View.GONE);
-                } else {
-                    // Inside Register
-                    registerText.setText("Have an account? Login");
-                    mSignInButton.setText("Register");
-                    mPasswordView2.setVisibility(View.VISIBLE);
-                }
+                updateVisibility(true);
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-    }
 
+        updateVisibility(false);
+    }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid username, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * Updates the visibility of the different inputs based on the type of authentication: login vs registration
+     * @param animated if the change has to be animated or not
      */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
+    public void updateVisibility(boolean animated) {
+        final TextView registerText = (TextView) findViewById(R.id.register_text);
+        final Button mSignInButton = (Button) findViewById(R.id.login_button);
+        if (!isRegistering) {
+            // Inside Login
+            if (animated) {
+                mLoginFormView.animate().rotationYBy(90f).setListener(new Animator.AnimatorListener() {
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        registerText.setText("Don't have an account? Register");
+                        mSignInButton.setText("Log in");
+                        mPasswordView2.setVisibility(View.GONE);
+                        mNameView.setVisibility(View.GONE);
+                        mStatusContainer.setVisibility(View.GONE);
+                        mLoginFormView.setRotationY(270f);
+                        mLoginFormView.animate().rotationY(360f).setListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                    }
+
+                });
+            } else {
+                registerText.setText("Don't have an account? Register");
+                mSignInButton.setText("Log in");
+                mPasswordView2.setVisibility(View.GONE);
+                mStatusContainer.setVisibility(View.GONE);
+                mNameView.setVisibility(View.GONE);
+            }
+        } else {
+            // Inside Register
+            if (animated) {
+                mLoginFormView.animate().rotationYBy(90f).setListener(new Animator.AnimatorListener() {
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        registerText.setText("Have an account? Login");
+                        mSignInButton.setText("Register");
+                        mPasswordView2.setVisibility(View.VISIBLE);
+                        mNameView.setVisibility(View.VISIBLE);
+                        mStatusContainer.setVisibility(View.VISIBLE);
+                        mLoginFormView.setRotationY(270f);
+                        mLoginFormView.animate().rotationY(360f).setListener(null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+
+                });
+            } else {
+                registerText.setText("Have an account? Login");
+                mSignInButton.setText("Register");
+                mPasswordView2.setVisibility(View.VISIBLE);
+                mNameView.setVisibility(View.VISIBLE);
+                mStatusContainer.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    /**
+     * When the user clicks the button, try logging in or registering
+     * Also checks for most types of errors
+     */
+    public void submit() {
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        if (password.equals("")) {
+            mPasswordView.setError("The password cannot be empty");
             return;
         }
-
-        // Reset errors.
-        mUsernameView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String password2 = mPasswordView2.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid username address.
-        if (TextUtils.isEmpty(username) || !isUsernameValid(username)) {
-            mUsernameView.setError("Username not valid");
-            focusView = mUsernameView;
-            cancel = true;
-        }
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (!isRegistering) {
-            // Login, don't check password 2
-        } else if (TextUtils.isEmpty(password2) || !password.equals(password2)) {
-            mPasswordView2.setError("Passwords don't match");
-            focusView = mPasswordView2;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+        if (isRegistering) {
+            if (!password.equals(mPasswordView2.getText().toString())) {
+                mPasswordView2.setError("The passwords must match");
+                return;
+            }
+            final String name = mNameView.getText().toString();
+            if (name.equals("")) {
+                mNameView.setError("Name cannot be empty");
+                return;
+            }
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("FIREBASE", "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            showProgress(false);
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("FIREBASE", "User profile updated.");
+                                                }
+                                            }
+                                        });
+                            }
+
+                        }
+                    });
+        } else {
+            showProgress(true);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("FIREBASE", "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            showProgress(false);
+                            if (!task.isSuccessful()) {
+                                Log.w("FIREBASE", "signInWithEmail:failed", task.getException());
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 
-    private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
-        return true;
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() >= 4;
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     /**
@@ -213,64 +332,6 @@ public class LoginActivity extends AppCompatActivity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mUsername;
-        private final String mPassword;
-
-        UserLoginTask(String username, String password) {
-            mUsername = username;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUsername)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            return isRegistering;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                showProgress(false);
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
         }
     }
 }

@@ -1,0 +1,152 @@
+{
+   "11464394": {
+      "date": "10/1/2015 0:00",
+      "locType": "Vacant Building",
+      "zip": "11433",
+      "address": "164-51 109 AVENUE",
+      "city": "Jamaica",
+      "bor": "QUEENS",
+      "lat": 40.69577219,
+      "lon": -73.78821712
+   },
+   "11464467": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Apt. Building",
+      "zip": "11215",
+      "address": "571 9 STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.66476494,
+      "lon": -73.97715438
+   },
+   "11464508": {
+      "date": "10/1/2015 0:00",
+      "locType": "1-2 Family Dwelling",
+      "zip": "10309",
+      "address": "476 DARLINGTON AVENUE",
+      "city": "STATEN ISLAND",
+      "bor": "STATEN ISLAND",
+      "lat": 40.53434099,
+      "lon": -74.20181345
+   },
+   "11464509": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Apt. Building",
+      "zip": "11221",
+      "address": "119 LINDEN STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.69327923,
+      "lon": -73.91953012
+   },
+   "11464521": {
+      "date": "10/1/2015 0:00",
+      "locType": "1-2 Family Dwelling",
+      "zip": "10307",
+      "address": "390 MANHATTAN STREET",
+      "city": "STATEN ISLAND",
+      "bor": "STATEN ISLAND",
+      "lat": 40.50068756,
+      "lon": -74.24118563
+   },
+   "11464567": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Apt. Building",
+      "zip": "11215",
+      "address": "571 9 STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.66476494,
+      "lon": -73.97715438
+   },
+   "11464639": {
+      "date": "10/1/2015 0:00",
+      "locType": "Other (Explain Below)",
+      "zip": "11413",
+      "address": "",
+      "city": "SPRINGFIELD GARDENS",
+      "bor": "QUEENS",
+      "lat": 40.66773999,
+      "lon": -73.76168527
+   },
+   "11464850": {
+      "date": "10/1/2015 0:00",
+      "locType": "Vacant Lot",
+      "zip": "11211",
+      "address": "16 OLIVE STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.71302865,
+      "lon": -73.93869636
+   },
+   "11464938": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Apt. Building",
+      "zip": "10009",
+      "address": "640 EAST   14 STREET",
+      "city": "NEW YORK",
+      "bor": "MANHATTAN",
+      "lat": 40.72865745,
+      "lon": -73.97620522
+   },
+   "11465153": {
+      "date": "10/1/2015 0:00",
+      "locType": "1-2 Family Dwelling",
+      "zip": "11210",
+      "address": "654 EAST   24 STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.63442822,
+      "lon": -73.95415299
+   },
+   "11465250": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Mixed Use Building",
+      "zip": "10314",
+      "address": "86 GARY COURT",
+      "city": "STATEN ISLAND",
+      "bor": "STATEN ISLAND",
+      "lat": 40.60798114,
+      "lon": -74.16024799
+   },
+   "11465435": {
+      "date": "10/1/2015 0:00",
+      "locType": "Vacant Lot",
+      "zip": "11203",
+      "address": "692 MIDWOOD STREET",
+      "city": "BROOKLYN",
+      "bor": "BROOKLYN",
+      "lat": 40.66090764,
+      "lon": -73.93767377
+   },
+   "11465688": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Mixed Use Building",
+      "zip": "11377",
+      "address": "39-50 60 STREET",
+      "city": "Woodside",
+      "bor": "QUEENS",
+      "lat": 40.74609315,
+      "lon": -73.90418965
+   },
+   "11465689": {
+      "date": "10/1/2015 0:00",
+      "locType": "3+ Family Mixed Use Building",
+      "zip": "10027",
+      "address": "60 WEST  129 STREET",
+      "city": "NEW YORK",
+      "bor": "MANHATTAN",
+      "lat": 40.80981848,
+      "lon": -73.94246165
+   },
+   "11466854": {
+      "date": "10/1/2015 0:00",
+      "locType": "Other (Explain Below)",
+      "zip": "10009",
+      "address": "465 EAST   10 STREET",
+      "city": "NEW YORK",
+      "bor": "MANHATTAN",
+      "lat": 40.72457006,
+      "lon": -73.97414303
+   }
+}

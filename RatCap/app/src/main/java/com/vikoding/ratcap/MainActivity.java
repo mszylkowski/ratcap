@@ -3,8 +3,13 @@ package com.vikoding.ratcap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,15 +19,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private Query mQuery;
+    private MyAdapter mMyAdapter;
+    private ArrayList<Report> mAdapterItems;
+    private ArrayList<String> mAdapterKeys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,25 +67,32 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        final View topHeader = navigationView.getHeaderView(0);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // Name, email address, and profile photo Url
             String name = user.getDisplayName();
             String email = user.getEmail();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = user.getUid();
+            if (name == null || name.equals("")) {
+                name = getIntent().getExtras().getString("NAME");
+            }
+            boolean isAdmin = name.contains("[admin]");
+            name = name.replace("[admin]", "");
+            ((TextView) topHeader.findViewById(R.id.name_navbar)).setText(name);
+            ((TextView) topHeader.findViewById(R.id.email_navbar)).setText(email);
         }
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -83,6 +106,19 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
+        setupFirebase();
+        setupRecyclerview();
+    }
+
+    private void setupFirebase() {
+        mQuery = FirebaseDatabase.getInstance().getReference("reports");
+    }
+
+    private void setupRecyclerview() {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.sightings_master_recyclerview);
+        mMyAdapter = new MyAdapter(mQuery, mAdapterItems, mAdapterKeys);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mMyAdapter);
     }
 
     @Override
@@ -111,19 +147,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             FirebaseAuth.getInstance().signOut();
             return true;
@@ -155,5 +186,72 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class MyAdapter extends FirebaseRecyclerAdapter<MyAdapter.ViewHolder, Report> {
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            TextView textViewAddress;
+            TextView textViewCity;
+            TextView textViewDate;
+            View layout;
+
+            public ViewHolder(View view) {
+                super(view);
+                textViewAddress = (TextView) view.findViewById(R.id.sightings_master_item_address);
+                textViewCity = (TextView) view.findViewById(R.id.sightings_master_item_city);
+                textViewDate = (TextView) view.findViewById(R.id.sightings_master_item_date);
+                layout = view;
+            }
+        }
+
+        public MyAdapter(Query query, @Nullable ArrayList<Report> items,
+                         @Nullable ArrayList<String> keys) {
+            super(query, items, keys);
+        }
+
+        @Override
+        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
+            final Report item = getItem(position);
+            holder.textViewAddress.setText(item.getAddress());
+            holder.textViewCity.setText(item.getCity());
+            holder.textViewDate.setText(item.getDate());
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+                    intent.putExtra("REPORT", item);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        @Override
+        protected void itemAdded(Report item, String key, int position) {
+            Log.d("MyAdapter", "Added a new item to the adapter.");
+        }
+
+        @Override
+        protected void itemChanged(Report oldItem, Report newItem, String key, int position) {
+            Log.d("MyAdapter", "Changed an item.");
+        }
+
+        @Override
+        protected void itemRemoved(Report item, String key, int position) {
+            Log.d("MyAdapter", "Removed an item from the adapter.");
+        }
+
+        @Override
+        protected void itemMoved(Report item, String key, int oldPosition, int newPosition) {
+            Log.d("MyAdapter", "Moved an item.");
+        }
     }
 }

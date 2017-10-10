@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
 
     private boolean isRegistering = false;
+    private boolean pressedRegister = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (pressedRegister) {
+                        Log.d("Firebase", "onAuthStateChanged:signed_in:" + user.getUid());
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         };
@@ -215,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
     public void submit() {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        pressedRegister = true;
         if (password.equals("")) {
             mPasswordView.setError("The password cannot be empty");
             return;
@@ -224,7 +229,7 @@ public class LoginActivity extends AppCompatActivity {
                 mPasswordView2.setError("The passwords must match");
                 return;
             }
-            final String name = mNameView.getText().toString();
+            final String name = mNameView.getText().toString() + (mStatusSwitch.isChecked() ? "[admin]" : "");
             if (name.equals("")) {
                 mNameView.setError("Name cannot be empty");
                 return;
@@ -235,14 +240,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("FIREBASE", "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            showProgress(false);
                             if (!task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
+                                showProgress(false);
                             } else {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -256,6 +257,12 @@ public class LoginActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()) {
                                                     Log.d("FIREBASE", "User profile updated.");
+                                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                    intent.putExtra("NAME", name);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    showProgress(false);
                                                 }
                                             }
                                         });
@@ -270,32 +277,18 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Log.d("FIREBASE", "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
                             showProgress(false);
                             if (!task.isSuccessful()) {
                                 Log.w("FIREBASE", "signInWithEmail:failed", task.getException());
                                 Toast.makeText(getApplicationContext(), task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
+                            } else {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         }
                     });
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
@@ -304,9 +297,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -328,10 +318,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 }

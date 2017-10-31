@@ -46,15 +46,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <activity
-            android:name=".MapFragment"
-            android:label="@string/title_activity_report"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ReportActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:name=".ReportActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CreateReportActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

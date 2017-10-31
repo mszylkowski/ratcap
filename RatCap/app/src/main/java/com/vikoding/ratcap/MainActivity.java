@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Send Report not implemented", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), CreateReportActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -87,11 +87,13 @@ public class MainActivity extends AppCompatActivity
             String name = user.getDisplayName();
             String email = user.getEmail();
             if (name == null || name.equals("")) {
-                name = getIntent().getExtras().getString("NAME");
+                name = getIntent().getStringExtra("NAME");
             }
-            boolean isAdmin = name.contains("[admin]");
-            name = name.replace("[admin]", "");
-            ((TextView) topHeader.findViewById(R.id.name_navbar)).setText(name);
+            if (name != null) {
+                boolean isAdmin = name.contains("[admin]");
+                name = name.replace("[admin]", "");
+                ((TextView) topHeader.findViewById(R.id.name_navbar)).setText(name);
+            }
             ((TextView) topHeader.findViewById(R.id.email_navbar)).setText(email);
         }
 
@@ -106,15 +108,14 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         };
-        setupFirebase();
         setupRecyclerview();
     }
 
-    private void setupFirebase() {
-        mQuery = FirebaseDatabase.getInstance().getReference("reports");
-    }
-
+    /**
+     * Sets the adapter for the RecyclerView
+     */
     private void setupRecyclerview() {
+        mQuery = FirebaseDatabase.getInstance().getReference("reports").limitToLast(50).orderByKey();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.sightings_master_recyclerview);
         mMyAdapter = new MyAdapter(mQuery, mAdapterItems, mAdapterKeys);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -188,6 +189,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * RecyclerView adapter that fetches data from firebase. Stores all the reports in mAdapterItems
+     */
     private class MyAdapter extends FirebaseRecyclerAdapter<MyAdapter.ViewHolder, Report> {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -236,22 +240,22 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void itemAdded(Report item, String key, int position) {
-            Log.d("MyAdapter", "Added a new item to the adapter.");
+
         }
 
         @Override
         protected void itemChanged(Report oldItem, Report newItem, String key, int position) {
-            Log.d("MyAdapter", "Changed an item.");
+
         }
 
         @Override
         protected void itemRemoved(Report item, String key, int position) {
-            Log.d("MyAdapter", "Removed an item from the adapter.");
+
         }
 
         @Override
         protected void itemMoved(Report item, String key, int oldPosition, int newPosition) {
-            Log.d("MyAdapter", "Moved an item.");
+
         }
     }
 }

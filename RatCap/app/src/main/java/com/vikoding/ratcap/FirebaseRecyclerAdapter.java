@@ -216,7 +216,7 @@ public abstract class FirebaseRecyclerAdapter<ViewHolder extends RecyclerView.Vi
      * @return the item
      */
     public T getItem(int position) {
-        return mItems.get(position);
+        return mItems.get(mItems.size() - position - 1);
     }
 
     /**

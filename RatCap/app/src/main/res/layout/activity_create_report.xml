@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vikoding.ratcap.CreateReportActivity"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/send_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:hint="Address" />
+
+
+        <EditText
+            android:id="@+id/send_zip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Zip code" />
+
+        <EditText
+            android:id="@+id/send_borough"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Borough" />
+
+        <EditText
+            android:id="@+id/send_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="City" />
+
+        <Spinner
+            android:id="@+id/send_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></Spinner>
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Report"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="We will use your current location and time to report the event"/>
+    </LinearLayout>
+
+</LinearLayout>

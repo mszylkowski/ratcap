@@ -18,12 +18,13 @@ public class Report implements Serializable {
     private float lon;
     private String locType;
     private String zip;
+    private String key;
 
     /**
      * Create an instance of the report with all the attributes empty
      */
     public Report() {
-        this("", "", "", "", 0, 0, "", "");
+        this("", "", "", "", 0, 0, "", "", "");
     }
 
     /**
@@ -36,8 +37,9 @@ public class Report implements Serializable {
      * @param longitude
      * @param locType
      * @param zip
+     * @param key
      */
-    public Report(String address, String borough, String city, String date, float latitude, float longitude, String locType, String zip) {
+    public Report(String address, String borough, String city, String date, float latitude, float longitude, String locType, String zip, String key) {
         this.address = address;
         this.bor = borough;
         this.city = city;
@@ -46,6 +48,7 @@ public class Report implements Serializable {
         this.lon = longitude;
         this.locType = locType;
         this.zip = zip;
+        this.key = key;
     }
 
     public String getAddress() {
@@ -110,6 +113,14 @@ public class Report implements Serializable {
 
     public void setZip(String zipCode) {
         this.zip = zipCode;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Map<String, Object> toMap() {

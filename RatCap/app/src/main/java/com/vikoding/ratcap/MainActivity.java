@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity
 
         final View topHeader = navigationView.getHeaderView(0);
 
+        mAdapterItems = new ArrayList<Report>();
+        mAdapterKeys = new ArrayList<String>();
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String name = user.getDisplayName();
@@ -172,8 +175,13 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.map) {
+            for (int i = 0; i < mAdapterItems.size(); i++) {
+                mAdapterItems.get(i).setKey(mAdapterKeys.get(i));
+            }
+            Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+            intent.putExtra("REPORTS", mAdapterItems);
+            startActivity(intent);
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {

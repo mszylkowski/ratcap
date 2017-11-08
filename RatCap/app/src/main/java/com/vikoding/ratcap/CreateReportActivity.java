@@ -91,10 +91,10 @@ public class CreateReportActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String key = FirebaseDatabase.getInstance().getReference("reports").push().getKey();
-                String timeStamp = new SimpleDateFormat("MM/dd/yyyy hh:mm").format(new Date());
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm").format(new Date());
                 Report report = new Report(mAddress.getText().toString(), mBorough.getText().toString(),
                         mCity.getText().toString(), timeStamp, latitude, longitude,
-                        locationType, mZip.getText().toString());
+                        locationType, mZip.getText().toString(), key);
                 Map<String, Object> postValues = report.toMap();
                 FirebaseDatabase.getInstance().getReference("reports").child(key).updateChildren(postValues);
                 finish();

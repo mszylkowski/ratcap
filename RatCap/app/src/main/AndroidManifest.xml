@@ -55,8 +55,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GraphsActivity"
+            android:label="@string/title_activity_graphs"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,11 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,7 +102,7 @@ public class CreateReportActivity extends AppCompatActivity {
                         locationType, mZip.getText().toString(), key);
                 Map<String, Object> postValues = report.toMap();
                 FirebaseDatabase.getInstance().getReference("reports").child(key).updateChildren(postValues);
-                finish();
+                increaseMonth(timeStamp.split("-")[0] + "-" + timeStamp.split("-")[1]);
             }
         });
 
@@ -137,6 +142,32 @@ public class CreateReportActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void increaseMonth(String yearMonth) {
+        findViewById(R.id.sendReportProgressBar).setVisibility(View.VISIBLE);
+        findViewById(R.id.sendReportForm).setVisibility(View.GONE);
+        FirebaseDatabase.getInstance().getReference("months/" + yearMonth).runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Integer p = mutableData.getValue(Integer.class);
+                if (p == null) {
+                    p = 0;
+                }
+
+                p = p + 1;
+
+                // Set value and report transaction success
+                mutableData.setValue(p);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                finish();
+            }
+        });
     }
 
 }

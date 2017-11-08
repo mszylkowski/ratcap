@@ -56,7 +56,7 @@ public class Report implements Serializable {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address.toUpperCase();
     }
 
     public String getBor() {
@@ -64,7 +64,7 @@ public class Report implements Serializable {
     }
 
     public void setBor(String bor) {
-        this.bor = bor;
+        this.bor = bor.toUpperCase();
     }
 
     public String getCity() {
@@ -72,7 +72,7 @@ public class Report implements Serializable {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = city.toUpperCase();
     }
 
     public String getDate() {

@@ -140,6 +140,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (mMyAdapter != null) {
+            mMyAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -173,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.profile) {
             // Handle the camera action
         } else if (id == R.id.map) {
             for (int i = 0; i < mAdapterItems.size(); i++) {
@@ -182,8 +190,9 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
             intent.putExtra("REPORTS", mAdapterItems);
             startActivity(intent);
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.graphs) {
+            Intent intent = new Intent(getApplicationContext(), GraphsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

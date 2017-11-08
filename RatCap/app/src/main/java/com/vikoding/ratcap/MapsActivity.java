@@ -166,4 +166,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             fetchData();
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

@@ -61,7 +61,7 @@ public class GraphsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         fromButton = (Button)findViewById(R.id.chooseFrom);
         toButton = (Button)findViewById(R.id.chooseTo);
         graph = (LineChart) findViewById(R.id.chart);
@@ -139,5 +139,11 @@ public class GraphsActivity extends AppCompatActivity {
             fromDate = year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
             fetchData();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
